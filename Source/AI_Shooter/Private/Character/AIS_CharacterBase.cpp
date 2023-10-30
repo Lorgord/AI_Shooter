@@ -3,11 +3,14 @@
 
 #include "AI_Shooter/Public/Character/AIS_CharacterBase.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/AttributesComponent/AIS_CharacterAttributesComponent.h"
+#include "Components/EquipmentComponent/AIS_CharacterEquipmentComponent.h"
 
 AAIS_CharacterBase::AAIS_CharacterBase()
 {
 	AttributesComponent = CreateDefaultSubobject<UAIS_CharacterAttributesComponent>(TEXT("AttributesComponent"));
+	EquipmentComponent = CreateDefaultSubobject<UAIS_CharacterEquipmentComponent>(TEXT("EquipmentComponent"));
 }
 
 void AAIS_CharacterBase::BeginPlay()
@@ -20,11 +23,34 @@ void AAIS_CharacterBase::BeginPlay()
 	}
 }
 
-void AAIS_CharacterBase::Tick(float DeltaSeconds)
+void AAIS_CharacterBase::StartShooting()
 {
-	Super::Tick(DeltaSeconds);
+	if (IsValid(EquipmentComponent) || CanUseEquipment())
+	{
+		EquipmentComponent->StartShooting();
+	}
 }
 
-void AAIS_CharacterBase::OnCharacterDeath()
+void AAIS_CharacterBase::StopShooting()
 {
+	if (IsValid(EquipmentComponent) || CanUseEquipment())
+	{
+		EquipmentComponent->StopShooting();
+	}
+}
+
+void AAIS_CharacterBase::StartReloading()
+{
+	if (IsValid(EquipmentComponent) || CanUseEquipment())
+	{
+		EquipmentComponent->StartReloading();
+	}
+}
+
+void AAIS_CharacterBase::OnCharacterDeath_Implementation()
+{
+	bIsCharacterDead = true;
+	GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
+	GetCapsuleComponent()->DestroyComponent();
+	GetMesh()->SetSimulatePhysics(true);
 }

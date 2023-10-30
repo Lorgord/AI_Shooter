@@ -59,6 +59,10 @@ void AAIS_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	{
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AAIS_CharacterBase::StartShooting);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &AAIS_CharacterBase::StopShooting);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &AAIS_CharacterBase::StartReloading);
 		
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAIS_PlayerCharacter::Move);
 		
@@ -91,4 +95,11 @@ void AAIS_PlayerCharacter::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
+}
+
+void AAIS_PlayerCharacter::OnCharacterDeath_Implementation()
+{
+	Super::OnCharacterDeath_Implementation();
+
+	DisableInput(PlayerController);
 }

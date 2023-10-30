@@ -16,7 +16,7 @@ void UAIS_CharacterAttributesComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	OwnerCharacter = GetOwner<ACharacter>();
 
 	
 	if (!IsValid(OwnerCharacter)) return;
@@ -46,10 +46,6 @@ void UAIS_CharacterAttributesComponent::OnTakeAnyDamage(AActor* DamagedActor, fl
 			OnCharacterDeath.Broadcast();
 		}
 	}
-
-#if UE_BUILD_DEBUG || UE_BUILD_DEVELOPMENT
-	DebugDrawAttributes();
-#endif
 }
 
 void UAIS_CharacterAttributesComponent::DebugDrawAttributes()

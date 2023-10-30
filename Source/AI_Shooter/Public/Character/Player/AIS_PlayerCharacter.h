@@ -43,6 +43,10 @@ protected:
 
 //....................................................................................................................//
 
+//Blueprint methods
+public:
+
+	virtual void OnCharacterDeath_Implementation() override;
 	
 
 //Blueprint values
@@ -62,6 +66,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PlayerCharacter|Input")
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PlayerCharacter|Input")
+	UInputAction* ShootAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PlayerCharacter|Input")
+	UInputAction* ReloadAction;
 //....................................................................................................................//
 
 //...................................................Camera values....................................................//

@@ -21,22 +21,39 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	virtual void Tick(float DeltaSeconds) override;
-
 //Blueprint methods
 public:
 
-	UFUNCTION(BlueprintCallable, Category = "Character|Death")
+	UFUNCTION(BlueprintCallable, Category = "Character|Battle")
+	void StartShooting();
+	
+	UFUNCTION(BlueprintCallable, Category = "Character|Battle")
+	void StopShooting();
+	
+	UFUNCTION(BlueprintCallable, Category = "Character|Battle")
+	void StartReloading();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character|Death")
 	void OnCharacterDeath();
+
+	UFUNCTION(BlueprintCallable, Category = "Character|Death")
+	FORCEINLINE bool CanUseEquipment() const { return !bIsCharacterDead; }
 	
 
 //Blueprint values
 public:
 
+	UPROPERTY(BlueprintReadOnly, Category = "Character|Death")
+	bool bIsCharacterDead = false;
+	
+
 //.....................................................Components.....................................................//
 
-	UPROPERTY(BlueprintReadOnly, Category = "Character|Components")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Components")
 	class UAIS_CharacterAttributesComponent* AttributesComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Components")
+	class UAIS_CharacterEquipmentComponent* EquipmentComponent = nullptr;
 
 //....................................................................................................................//
 };
