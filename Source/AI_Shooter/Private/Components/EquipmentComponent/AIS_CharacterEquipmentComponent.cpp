@@ -60,15 +60,26 @@ void UAIS_CharacterEquipmentComponent::StartReloading()
 	}
 }
 
+bool UAIS_CharacterEquipmentComponent::IsWeaponNeedsReload()
+{
+	if (IsValid(RangeWeapon))
+	{
+		return RangeWeapon->CurrentAmmo <= 0;
+	}
+
+	return false;
+}
+
 void UAIS_CharacterEquipmentComponent::OnWeaponStartReload()
 {
-	if (!IsValid(RangeWeapon)) return;
+	if (!IsValid(RangeWeapon) || bIsWeaponReloading) return;
 	
 	if (!bIsAmmoInfinity && TotalAmmo <= 0)
 	{
 		return;
 	}
 
+	bIsWeaponReloading = true;
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &UAIS_CharacterEquipmentComponent::OnWeaponEndReload, RangeWeapon->ReloadTime, false);
 }
 
@@ -88,6 +99,7 @@ void UAIS_CharacterEquipmentComponent::OnWeaponEndReload()
 		TotalAmmo -= AmmoToReload;
 	}
 
+	bIsWeaponReloading = false;
 	RangeWeapon->StopReloading();
 }
 

@@ -7,10 +7,13 @@
 #include "Components/AttributesComponent/AIS_CharacterAttributesComponent.h"
 #include "Components/EquipmentComponent/AIS_CharacterEquipmentComponent.h"
 
+
+
 AAIS_CharacterBase::AAIS_CharacterBase()
 {
 	AttributesComponent = CreateDefaultSubobject<UAIS_CharacterAttributesComponent>(TEXT("AttributesComponent"));
 	EquipmentComponent = CreateDefaultSubobject<UAIS_CharacterEquipmentComponent>(TEXT("EquipmentComponent"));
+	
 }
 
 void AAIS_CharacterBase::BeginPlay()
@@ -20,6 +23,17 @@ void AAIS_CharacterBase::BeginPlay()
 	if (IsValid(AttributesComponent))
 	{
 		AttributesComponent->OnCharacterDeath.AddDynamic(this, &AAIS_CharacterBase::OnCharacterDeath);
+	}
+	
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = this;
+	
+	FocusActor = GetWorld()->SpawnActor<AActor>(FocusActorClass, GetTransform(), SpawnParameters);
+	
+	if (IsValid(FocusActor))
+	{
+		FocusActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FocusActorSocket);
 	}
 }
 

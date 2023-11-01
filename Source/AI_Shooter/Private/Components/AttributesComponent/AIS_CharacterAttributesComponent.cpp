@@ -50,7 +50,10 @@ void UAIS_CharacterAttributesComponent::OnTakeAnyDamage(AActor* DamagedActor, fl
 
 void UAIS_CharacterAttributesComponent::DebugDrawAttributes()
 {
-
+	if (Health <= 0.0f)
+	{
+		return;
+	}
 	FVector TextLocation = OwnerCharacter->GetActorLocation() + OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * FVector::UpVector;
 	FVector HealthTextLocation = TextLocation + HealthTextHeight * FVector::UpVector;
 	

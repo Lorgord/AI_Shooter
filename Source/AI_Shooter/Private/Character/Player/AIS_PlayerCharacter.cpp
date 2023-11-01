@@ -25,6 +25,8 @@ AAIS_PlayerCharacter::AAIS_PlayerCharacter()
 	FollowCamera->AttachToComponent(CameraBoom, FAttachmentTransformRules::KeepRelativeTransform, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 	FollowCamera->SetActive(true);
+
+	CharacterTeam = ETeams::Player;
 }
 
 void AAIS_PlayerCharacter::BeginPlay()

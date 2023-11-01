@@ -16,24 +16,24 @@ class AI_SHOOTER_API UAIS_CharacterEquipmentComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-//constructor
-public:
+	//constructor
+	public:
 	UAIS_CharacterEquipmentComponent();
 
-//c++ protected methods
-protected:
+	//c++ protected methods
+	protected:
 	
 	virtual void BeginPlay() override;
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-//c++ private values
-private:
+	//c++ private values
+	private:
 
 	FTimerHandle ReloadTimer;
 
-//Blueprint methods
-public:
+	//Blueprint methods
+	public:
 
 	UFUNCTION(BlueprintCallable, Category = "Equipment|Action")
 	void StartShooting();
@@ -43,6 +43,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Equipment|Action")
 	void StartReloading();
+
+	UFUNCTION(BlueprintCallable, Category = "Eqiopment|Action")
+	bool IsDoingSomeAction() { return bIsWeaponReloading; }
+
+	UFUNCTION(BlueprintCallable, Category = "Equipment|Action")
+	bool IsWeaponNeedsReload();
 
 	UFUNCTION(BlueprintCallable, Category = "Equipment|Action")
 	void OnWeaponStartReload();
@@ -67,6 +73,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Equipment|Ammo")
 	bool bIsAmmoInfinity = false;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Equipment|Reload")
+	bool bIsWeaponReloading = false;
 
 
 //....................................................................................................................//
