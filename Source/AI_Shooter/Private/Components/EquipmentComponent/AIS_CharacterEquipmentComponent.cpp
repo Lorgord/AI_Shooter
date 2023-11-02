@@ -23,7 +23,7 @@ void UAIS_CharacterEquipmentComponent::BeginPlay()
 	if (IsValid(RangeWeapon))
 	{
 		RangeWeapon->AttachToComponent(GetOwner<ACharacter>()->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
-		RangeWeapon->OnWeaponReload.AddDynamic(this, &UAIS_CharacterEquipmentComponent::OnWeaponStartReload);
+		RangeWeapon->OnWeaponStartReload.AddDynamic(this, &UAIS_CharacterEquipmentComponent::OnWeaponStartReload);
 	}
 }
 
@@ -58,6 +58,18 @@ void UAIS_CharacterEquipmentComponent::StartReloading()
 	{
 		RangeWeapon->StartReloading();
 	}
+}
+
+bool UAIS_CharacterEquipmentComponent::IsDoingSomeAction()
+{
+	bool Result = bIsWeaponReloading;
+	
+	if (IsValid(RangeWeapon))
+	{
+		Result |= RangeWeapon->IsShooting();
+	}
+	
+	return Result;
 }
 
 bool UAIS_CharacterEquipmentComponent::IsWeaponNeedsReload()

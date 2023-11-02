@@ -26,33 +26,46 @@ void AAIS_RangeWeapon::StartShooting()
 	if (!CanShoot()) return;
 	
 	MakeShot();
+	StopShooting();
 
 	if (FireMode == EFireMode::FullAuto)
 	{
-		StopShooting();
 		GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &AAIS_RangeWeapon::MakeShot, GetShotTimerInterval(), true);
 	}
 }
 
 void AAIS_RangeWeapon::StopShooting()
 {
-	GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+	if (GetWorld()->GetTimerManager().IsTimerActive(ShotTimer))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+		
+		if (OnStoppedShooting.IsBound())
+		{
+			OnStoppedShooting.Broadcast();
+		}
+	}
 }
 
 void AAIS_RangeWeapon::StartReloading()
 {
 	if (CurrentAmmo == MaxAmmo) return;
 
-	if (OnWeaponReload.IsBound())
+	bIsReloading = true;
+	if (OnWeaponStartReload.IsBound())
 	{
-		OnWeaponReload.Broadcast();
-		bIsReloading = true;
+		OnWeaponStartReload.Broadcast();
 	}
 }
 
 void AAIS_RangeWeapon::StopReloading()
 {
 	bIsReloading = false;
+
+	if (OnWeaponStopReload.IsBound())
+	{
+		OnWeaponStopReload.Broadcast();
+	}
 }
 
 void AAIS_RangeWeapon::MakeShot()
@@ -76,6 +89,7 @@ void AAIS_RangeWeapon::MakeShot()
 	else
 	{
 		ShotRotation = OwningPawn->GetBaseAimRotation();
+		DrawDebugLine(GetWorld(), ShotLocation, ShotRotation.Vector(), FColor::Purple, false, 0.5f);
 	}
 	
 	ShotLocation = WeaponMesh->GetSocketLocation(MuzzleSocketName);
@@ -121,4 +135,9 @@ FVector AAIS_RangeWeapon::GetSpreadOffset(float Angle, FRotator ShotRotation)
 							ShotRotation.RotateVector(FVector::RightVector) * SpreadY) * SpreadSize;
 
 	return Result;
+}
+
+bool AAIS_RangeWeapon::IsShooting()
+{
+	return GetWorld()->GetTimerManager().IsTimerActive(ShotTimer);
 }

@@ -4,42 +4,42 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "AIS_BTTask_Attack.generated.h"
+#include "Navigation/PathFollowingComponent.h"
+#include "AIS_BTTask_MoveToRandomLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AI_SHOOTER_API UAIS_BTTask_Attack : public UBTTaskNode
+class AI_SHOOTER_API UAIS_BTTask_MoveToRandomLocation : public UBTTaskNode
 {
 	GENERATED_BODY()
 
-	UAIS_BTTask_Attack();
-
+	UAIS_BTTask_MoveToRandomLocation();
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 	UFUNCTION()
-	void OnAttackCompleted();
+	void OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result);
 
 public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
-	FBlackboardKeySelector TargetKey;
+	float InRadius = 2000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
-	float MaxFireDistance = 800.0f;
+	FBlackboardKeySelector MoveUntilKeyIsTrue;
 
 private:
 
 	UPROPERTY()
 	UBehaviorTreeComponent* BTComponent = nullptr;
-
-	UPROPERTY()
-	class AAIS_AICharacter* AICharacter = nullptr;
-
-	UPROPERTY()
-	AActor* TargetActor = nullptr;
 	
+	UPROPERTY()
+	UBlackboardComponent* Blackboard = nullptr;
+
+	UPROPERTY()
+	FAIRequestID MoveRequestID;
 };

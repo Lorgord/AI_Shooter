@@ -84,9 +84,17 @@ AActor* AAIS_AIControllerBase::GetClosestSensedActor(TSubclassOf<UAISense> Sense
 void AAIS_AIControllerBase::TryFindNextTarget()
 {
 	AActor* ClosestActor = GetClosestSensedActor(UAISense_Sight::StaticClass());
+
+	if (!IsValid(Blackboard) || !IsValid(ClosestActor)) return;
 	
-	if (IsValid(Blackboard) && IsValid(ClosestActor))
+		
+	if (const AAIS_CharacterBase* CharacterBase = Cast<AAIS_CharacterBase>(ClosestActor))
 	{
-		Blackboard->SetValueAsObject(FName("CurrentTarget"), ClosestActor);
+		if (IsValid(CharacterBase->FocusActor))
+		{
+			ClosestActor = CharacterBase->FocusActor;
+		}
 	}
+	
+	Blackboard->SetValueAsObject(FName("CurrentTarget"), ClosestActor);
 }

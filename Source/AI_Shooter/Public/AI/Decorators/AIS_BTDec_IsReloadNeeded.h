@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "AIS_BTDec_IsReadyToAttack.generated.h"
+#include "AIS_BTDec_IsReloadNeeded.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AI_SHOOTER_API UAIS_BTDec_IsReadyToAttack : public UBTDecorator
+class AI_SHOOTER_API UAIS_BTDec_IsReloadNeeded : public UBTDecorator
 {
 	GENERATED_BODY()
 

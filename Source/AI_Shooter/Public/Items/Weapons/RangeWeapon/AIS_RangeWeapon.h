@@ -8,6 +8,8 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponStartReload);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponStopReload);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStoppedShooting);
 
 UENUM(BlueprintType)
 enum class EFireMode : uint8
@@ -78,19 +80,28 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon|Shooting")
 	FORCEINLINE bool CanShoot() const { return CurrentAmmo > 0 && !bIsReloading; }
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon|Shooting")
+	bool IsShooting();
 	
 
 //Blueprint values
 public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
-	FOnWeaponStartReload OnWeaponReload;
+	FOnWeaponStartReload OnWeaponStartReload;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
+	FOnWeaponStartReload OnWeaponStopReload;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
+	FOnStoppedShooting OnStoppedShooting;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Info")
 	FName MuzzleSocketName = "Muzzle";
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon|Info")
-	EFireMode FireMode = EFireMode::Single;
+	EFireMode FireMode = EFireMode::FullAuto;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Info", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	int MaxAmmo = 30;

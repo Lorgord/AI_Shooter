@@ -45,7 +45,7 @@ class AI_SHOOTER_API UAIS_CharacterEquipmentComponent : public UActorComponent
 	void StartReloading();
 
 	UFUNCTION(BlueprintCallable, Category = "Eqiopment|Action")
-	bool IsDoingSomeAction() { return bIsWeaponReloading; }
+	bool IsDoingSomeAction();
 
 	UFUNCTION(BlueprintCallable, Category = "Equipment|Action")
 	bool IsWeaponNeedsReload();
