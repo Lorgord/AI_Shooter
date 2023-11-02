@@ -62,9 +62,6 @@ void UAIS_BTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	FVector TargetLocation = TargetActor->GetActorLocation();
 	FVector OwnerLocation = AICharacter->GetActorLocation();
 
-	FRotator Rotation = UKismetMathLibrary::FindLookAtRotation(OwnerLocation, TargetLocation);
-	AICharacter->FaceRotation(Rotation, DeltaSeconds);
-
 	FHitResult HitResult;
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(AICharacter);

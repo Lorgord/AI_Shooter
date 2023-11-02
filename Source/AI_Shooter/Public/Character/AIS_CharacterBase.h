@@ -68,10 +68,10 @@ public:
 	FName FocusActorSocket = "AimFocus";
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Focus")
-	TSubclassOf<AActor> FocusActorClass = nullptr;
+	TSubclassOf<APawn> FocusActorClass = nullptr;
 	
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Character|Focus")
-	AActor* FocusActor = nullptr;
+	APawn* FocusActor = nullptr;
 
 //.....................................................Components.....................................................//
 

@@ -29,7 +29,7 @@ void AAIS_CharacterBase::BeginPlay()
 	SpawnParameters.Owner = this;
 	SpawnParameters.Instigator = this;
 	
-	FocusActor = GetWorld()->SpawnActor<AActor>(FocusActorClass, GetTransform(), SpawnParameters);
+	FocusActor = GetWorld()->SpawnActor<APawn>(FocusActorClass, GetTransform(), SpawnParameters);
 	
 	if (IsValid(FocusActor))
 	{
@@ -64,6 +64,7 @@ void AAIS_CharacterBase::StartReloading()
 void AAIS_CharacterBase::OnCharacterDeath_Implementation()
 {
 	bIsCharacterDead = true;
+	FocusActor->Destroy();
 	GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
 	GetCapsuleComponent()->DestroyComponent();
 	GetMesh()->SetSimulatePhysics(true);

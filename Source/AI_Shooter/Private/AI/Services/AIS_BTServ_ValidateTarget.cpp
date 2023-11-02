@@ -21,6 +21,7 @@ void UAIS_BTServ_ValidateTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uin
 
 	if (!IsValid(TargetActor))
 	{
+		Blackboard->SetValueAsObject(TargetKey.SelectedKeyName, nullptr);
 		return;
 	}
 
@@ -29,5 +30,6 @@ void UAIS_BTServ_ValidateTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uin
 	if (Distance > MaxDistance)
 	{
 		Blackboard->SetValueAsObject(TargetKey.SelectedKeyName, nullptr);
+		return;
 	}
 }
