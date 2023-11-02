@@ -61,10 +61,20 @@ void AAIS_CharacterBase::StartReloading()
 	}
 }
 
+void AAIS_CharacterBase::StopAllActions()
+{
+	if (IsValid(EquipmentComponent))
+	{
+		EquipmentComponent->StopAllActions();
+	}
+}
+
 void AAIS_CharacterBase::OnCharacterDeath_Implementation()
 {
 	bIsCharacterDead = true;
 	FocusActor->Destroy();
+	StopAllActions();
+	
 	GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
 	GetCapsuleComponent()->DestroyComponent();
 	GetMesh()->SetSimulatePhysics(true);

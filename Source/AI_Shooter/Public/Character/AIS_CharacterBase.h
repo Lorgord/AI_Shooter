@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character|Battle")
 	void StartReloading();
 
+	UFUNCTION(Blueprintable, Category = "Character|Battle")
+	void StopAllActions();
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character|Death")
 	void OnCharacterDeath();
 

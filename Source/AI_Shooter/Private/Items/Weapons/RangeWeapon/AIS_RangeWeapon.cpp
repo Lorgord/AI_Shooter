@@ -89,7 +89,6 @@ void AAIS_RangeWeapon::MakeShot()
 	else
 	{
 		ShotRotation = OwningPawn->GetBaseAimRotation();
-		DrawDebugLine(GetWorld(), ShotLocation, ShotRotation.Vector(), FColor::Purple, false, 0.5f);
 	}
 	
 	ShotLocation = WeaponMesh->GetSocketLocation(MuzzleSocketName);

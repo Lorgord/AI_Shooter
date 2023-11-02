@@ -60,6 +60,19 @@ void UAIS_CharacterEquipmentComponent::StartReloading()
 	}
 }
 
+void UAIS_CharacterEquipmentComponent::StopAllActions()
+{
+	if (IsValid(RangeWeapon))
+	{
+		RangeWeapon->StopShooting();
+	}
+
+	if (GetWorld()->GetTimerManager().IsTimerActive(ReloadTimer))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
+	}
+}
+
 bool UAIS_CharacterEquipmentComponent::IsDoingSomeAction()
 {
 	bool Result = bIsWeaponReloading;
