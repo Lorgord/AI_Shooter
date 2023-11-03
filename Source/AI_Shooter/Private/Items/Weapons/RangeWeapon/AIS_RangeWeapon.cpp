@@ -80,18 +80,7 @@ void AAIS_RangeWeapon::MakeShot()
 
 	FVector ShotLocation;
 	FRotator ShotRotation;
-
-	if (OwningPawn->IsPlayerControlled())
-	{
-		const APlayerController* PlayerController = OwningPawn->GetController<APlayerController>();
-		PlayerController->GetPlayerViewPoint(ShotLocation, ShotRotation);
-	}
-	else
-	{
-		ShotRotation = OwningPawn->GetBaseAimRotation();
-	}
-	
-	ShotLocation = WeaponMesh->GetSocketLocation(MuzzleSocketName);
+	OwningPawn->GetController()->GetPlayerViewPoint(ShotLocation, ShotRotation);
 
 	const float RandSpreadAngle = FMath::RandRange(0.0f, FMath::DegreesToRadians(SpreadAngle));
 	
@@ -116,7 +105,7 @@ void AAIS_RangeWeapon::MakeShot()
 	
 	//..........Debug..........//
 	
-	DrawDebugLine(GetWorld(), ShotLocation, ShotEnd, FColor::Red, false, 0.5f);
+	DrawDebugLine(GetWorld(), WeaponMesh->GetSocketLocation(MuzzleSocketName), ShotEnd, FColor::Red, false, 0.5f);
 	DrawDebugPoint(GetWorld(), ShotEnd, 5.0f, FColor::Green, false, 0.5f);
 	
 	//.........................//
